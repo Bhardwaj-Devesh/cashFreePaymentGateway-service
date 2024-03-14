@@ -5,9 +5,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import java.util.*;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,9 +21,13 @@ import com.cashfree.model.*;
 import com.hiwipay.paymentgatewayservice.cashFreePaymentGateway.dto.cashFreeCreateOrderRequestDto;
 import com.hiwipay.paymentgatewayservice.common.annotation.LogEntryExit;
 import com.hiwipay.paymentgatewayservice.common.annotation.LogRequest;
+import com.hiwipay.paymentgatewayservice.common.dto.LedgerDto;
+import com.hiwipay.paymentgatewayservice.common.dto.response.PersonDto;
 import com.hiwipay.paymentgatewayservice.common.dto.resquest.GenericRequestBody;
 import com.hiwipay.paymentgatewayservice.common.error.BadRequestException;
 import com.hiwipay.paymentgatewayservice.common.error.ErrorType;
+import com.hiwipay.paymentgatewayservice.ipc.TransactionIpcService;
+import com.hiwipay.paymentgatewayservice.ipc.UserIpcService;
 
 @RestController
 @RequiredArgsConstructor
@@ -37,6 +40,8 @@ public class cashFreePgController {
     @Value("${cashfree.xClientSecret}")
     private String xClientSecret;
     private final Logger logger= LoggerFactory.getLogger(cashFreePgController.class);
+    private final UserIpcService userIpcService;
+    private final TransactionIpcService transactionIpcService;
     @GetMapping(value="/create")
     @LogEntryExit()
     @LogRequest
@@ -51,12 +56,12 @@ public class cashFreePgController {
         String xApiVersion = "2023-08-01";
 
         CreateOrderRequest request = new CreateOrderRequest();
-        request.setOrderAmount(1.00);
-        request.setOrderCurrency("INR");
-        request.setOrderId("order_23424533");
+        request.setOrderAmount(1.00);// done
+        request.setOrderCurrency("INR"); // done 
+        request.setOrderId("order_23424533");// question?
 
         CustomerDetails customerDetails = new CustomerDetails();
-        customerDetails.setCustomerId("walterwNrcMi");
+        customerDetails.setCustomerId("walterwNrcMi"); // question?
         customerDetails.setCustomerPhone("8474090589");
         customerDetails.setCustomerName("Walter White");
         customerDetails.setCustomerEmail("walter.white@example.com");
@@ -95,6 +100,30 @@ public class cashFreePgController {
                 new BadRequestException(ErrorType.DETAILS_NOT_PRESENT.getMessage()));
         String hiwiId= details.getHiwiId();
         String payerUserHashId= details.getPayerUserHashId();
+
+        // Important Check -> payment should be done by student and remitter only for testing we can allow admin 
+
+        LedgerDto ledger = transactionIpcService.getLedger(hiwiId);
+        float amountToPay=ledger.getAmount();
+        String currencyCode=ledger.getCurrencyCodeSource();
+        Map<String,String> map= new HashMap<>();
+        map.put("payerType",ledger.getPayerType());
+        map.put("hiwiRRN",ledger.getHiwiRrn());
+        map.put("studentHashId",ledger.getUserHashId());
+
+        List<Map<String, String>> result = new ArrayList<>();
+        result.add(map);
+        Map<String, Map<String, PersonDto>> personDtoMap = userIpcService.getPayersInfo(result);
+        Map<String, PersonDto> payerDetails = personDtoMap.get(ledger.getHiwiRrn());
+
+        if(payerDetails == null) throw new BadRequestException("No Payer is found");
+        PersonDto personDto;
+        if (payerDetails.get("relative")==null) {
+            personDto = payerDetails.get("student");
+        }
+        else{
+            personDto = payerDetails.get("relative");
+        }
         
         return "HELLO WORLD";
     }

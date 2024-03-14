@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: 'jdbc:postgresql://20.219.159.30:5431/testdb'
-    username: read_user
-    password: read_user
+    url: 'jdbc:postgresql://localhost:5432/hiwipay'
+    username: postgres
+    password: postgres
   flyway:
     enabled: false
 app:

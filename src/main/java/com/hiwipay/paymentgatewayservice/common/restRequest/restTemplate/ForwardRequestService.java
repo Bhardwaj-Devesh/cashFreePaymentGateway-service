@@ -39,6 +39,11 @@ public class ForwardRequestService {
     @Value("${remittance.service.port}")
     private int remittancePort;
 
+    @Value("${transaction.service.host}")
+    private String transactionHost;
+    @Value("${transaction.service.port}")
+    private int transactionPort;
+      
     @SneakyThrows
     public ResponseEntity<String> requestToEduconService(String uriPath, Object body) {
         URI uri = new URI("http", null,
@@ -76,6 +81,17 @@ public class ForwardRequestService {
     public ResponseEntity<String> requestToRemittanceService(String uriPath, Object body) {
         URI uri = new URI("http", null,
                 remittanceHost, remittancePort, uriPath, null, null);
+        ResponseEntity<String> response = restTemplateBean.postRequestToUri(uri, body);
+        if (!response.getStatusCode().is2xxSuccessful()) {
+            throw new BadRequestException(response.getBody());
+        }
+        return response;
+    }
+
+    @SneakyThrows
+    public ResponseEntity<String> requestToTransactionService(String uriPath, Object body) {
+        URI uri = new URI("http", null,
+                transactionHost, transactionPort, uriPath, null, null);
         ResponseEntity<String> response = restTemplateBean.postRequestToUri(uri, body);
         if (!response.getStatusCode().is2xxSuccessful()) {
             throw new BadRequestException(response.getBody());
