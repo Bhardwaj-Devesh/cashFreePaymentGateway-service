@@ -69,15 +69,6 @@ educon:
     port: 8888
 hiwipay:
   symmetricKey: "hiwipaySymmetricKey"
-cloud:
-  azure:
-    storage:
-      blob:
-        account-name: 'hiwistorageuat'
-        account-key: 'D+//Bpc2yKndvHsT9FA7ioqX9/huIMH6Az8dNGknE+IF49Auc6GlItPyyZ897PyeS6lIEyXXtVCb+AStkCvaKQ=='
-        endpoint: 'https://hiwistorageuat.blob.core.windows.net/'
-        container-name: 'blobcontainer'
-        connection-string: 'DefaultEndpointsProtocol=https;AccountName=hiwistorageuat;AccountKey=D+//Bpc2yKndvHsT9FA7ioqX9/huIMH6Az8dNGknE+IF49Auc6GlItPyyZ897PyeS6lIEyXXtVCb+AStkCvaKQ==;EndpointSuffix=core.windows.net'
 
 sftp:
   host: 'localhost'
