@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    url: 'jdbc:postgresql://20.219.159.30:5431/testdb'
+    username: read_user
+    password: read_user
+  flyway:
+    enabled: false
+app:
+  cron:
+    enabled: false
+cloud:
+  azure:
+    storage:
+      blob:
+        account-name: 'hiwistoragepreprod'
+        account-key: 'S3bGImuY9GjBU5UjlcUjogYQ2THI/5s/2GQLh7AdKKSCWIKMiC+8nejzvRXGoFtHXJRZQ8TIs8qE+AStWLcBrA=='
+        endpoint: 'https://hiwistoragepreprod.blob.core.windows.net/'
+        container-name: 'blobcontainer'
+        connection-string: 'DefaultEndpointsProtocol=https;AccountName=hiwistoragepreprod;AccountKey=S3bGImuY9GjBU5UjlcUjogYQ2THI/5s/2GQLh7AdKKSCWIKMiC+8nejzvRXGoFtHXJRZQ8TIs8qE+AStWLcBrA==;EndpointSuffix=core.windows.net'

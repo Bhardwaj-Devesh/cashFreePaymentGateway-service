@@ -1,0 +1,136 @@
+server:
+  port: '9060'
+  tomcat:
+    threads:
+      max: 1000
+spring:
+  profiles:
+    active: dev
+  task:
+    scheduling:
+      pool:
+        size: 20
+  datasource:
+    url: 'jdbc:postgresql://localhost:5432/hiwipay'
+    username: postgres
+    password: postgres
+  flyway:
+    enabled: false
+    baselineOnMigrate: true
+    baselineVersion: 9
+    defaultSchema: 'transaction_service'
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL9Dialect
+        default_schema: transaction_service
+  batch:
+    jdbc:
+      initialize-schema: always
+    job:
+      enabled: false
+
+neobank:
+  service:
+    url: 'http://localhost:9020'
+    host: 'localhost'
+    port: 9020
+user:
+  service:
+    url: 'http://localhost:9999'
+    host: 'localhost'
+    port: 9999
+university:
+  service:
+    url: 'http://localhost:9050'
+    host: 'localhost'
+    port: 9050
+remittance:
+  service:
+    url: 'http://localhost:9030'
+    host: 'localhost'
+    port: 9030
+transaction:
+  service:
+    url: 'https://localhost:9040'
+    host: 'localhost'
+    port: 9040
+educon:
+  service:
+    url: 'https://localhost:8888'
+    host: 'localhost'
+    port: 8888
+hiwipay:
+  symmetricKey: "hiwipaySymmetricKey"
+cloud:
+  azure:
+    storage:
+      blob:
+        account-name: 'hiwistorageuat'
+        account-key: 'D+//Bpc2yKndvHsT9FA7ioqX9/huIMH6Az8dNGknE+IF49Auc6GlItPyyZ897PyeS6lIEyXXtVCb+AStkCvaKQ=='
+        endpoint: 'https://hiwistorageuat.blob.core.windows.net/'
+        container-name: 'blobcontainer'
+        connection-string: 'DefaultEndpointsProtocol=https;AccountName=hiwistorageuat;AccountKey=D+//Bpc2yKndvHsT9FA7ioqX9/huIMH6Az8dNGknE+IF49Auc6GlItPyyZ897PyeS6lIEyXXtVCb+AStkCvaKQ==;EndpointSuffix=core.windows.net'
+
+sftp:
+  host: 'localhost'
+  port: 2222
+  user: 'foo'
+  password: 'pass'
+  remote:
+    directory: '/upload'
+
+muthoot:
+  api:
+    protocol: 'http'
+    username: 'HIWI001'
+    password: 'HIWI1234'
+    hostIp: '103.177.78.29'
+    port: 8032
+    host: 'http://103.177.78.29:8032/'
+    getJwtUri: 'api/v1/LeptaCharges/ValidateUserStatus'
+    leptaUri: 'api/v1/LeptaCharges/RetrieveTransactionCharges'
+
+transcorp:
+  api:
+    protocol: 'http'
+    token: 'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJEZW1vIEFjYyIsImFnZW50SWQiOjE2MCwiY29tcGFueUlkIjoyLCJpYXQiOjE3MDAyMTAxNTJ9.BCjZY59g2z1gHXYP3JsbLp-qsFXdB9EoS0f11gsC2a76RS3lVkNa1IVLelAC35eGYc1JNRsuuTkoDk9Zy0jScw'
+    hostIp: '13.126.145.20'
+    port: '8080'
+    host: 'http://13.126.145.20:8080/'
+    amount-breakup: 'remit-on-time/api/v1/tax-amount-calc'
+    doc-upload: 'remit-on-time/api/v1/transaction/document-upload'
+    book-deal: 'remit-on-time/api/v1/transaction/book-deal'
+    save-remittance: 'remit-on-time/api/v1/transaction/save-educational-remittance'
+    get-remittance: 'remit-on-time/api/v1/transaction/educational-remittance-detail/'
+    pre-remittance: 'remit-on-time/api/v1/verify-pan-record/'
+    swift-generator: 'remit-on-time/api/v1/transaction/swift/'
+    currency-rate: 'remit-on-time/api/v1/agent/applicable-currency-rate'
+  margin: 0.15
+
+dynamic-value-email:
+ remitter-portal: 'http://20.219.159.30:9085/login'
+
+forex:
+  service:
+    api: 'https://openexchangerates.org/api'
+    rateEndpoint: '/latest.json'
+    appId: 'abb9e143b18143da9ab1c91353842679'
+app:
+  env: 'dev' 
+  cron:
+    txn-pending-cron: '00 0/30 * * * *'
+    enabled: true
+
+dummy-pan: 'BFAPL9762A'
+
+cashfree:
+  xCliendId: 'TEST10051121f82b14fcae64a5d0c0be12115001'
+  xClientSecret: 'TESTd8d7ab8f0256e184052d0db9981144dfd461c3f'
