@@ -1,5 +1,7 @@
 package com.hiwipay.paymentgatewayservice.ipc;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -24,13 +26,13 @@ public class TransactionIpcService {
 
     @SneakyThrows
     @LogEntryExit
-    public LedgerDto getLedger(String hiwiId) {
+    public List<LedgerDto> getLedger(List<String> hiwiIds) {
         ResponseEntity<String> response = forwardRequestService.requestToTransactionService
-                ("/transaction/getLedger", hiwiId);
+                ("/transaction/getLedger", hiwiIds);
 
         logger.info(TRANSACTION_RESP, response.getStatusCode());
 
         return objectMapper.readValue(response.getBody(),
-                new TypeReference<LedgerDto>() {});
+                new TypeReference<List<LedgerDto>>() {});
     }
 }

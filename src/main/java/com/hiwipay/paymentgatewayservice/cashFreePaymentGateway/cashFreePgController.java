@@ -58,8 +58,8 @@ public class CashFreePgController {
 
         // Important Check -> payment should be done by student and remitter only for testing we can allow admin 
 
-        LedgerDto ledger = transactionIpcService.getLedger(hiwiId);
-        
+        List<LedgerDto> ledgerResponseList = transactionIpcService.getLedger(Collections.singletonList(hiwiId));
+        LedgerDto ledger= ledgerResponseList.get(0);
         if(ledger.getStatus() == TxnStatusType.REFUNDED || ledger.getStatus() == TxnStatusType.SUCCESSFUL || ledger.getStatus() == TxnStatusType.CANCELLED || ledger.getStatus() == TxnStatusType.EXPIRED)  {
             throw new BadRequestException("This Transaction Code is already Processed");
         }
@@ -88,7 +88,7 @@ public class CashFreePgController {
         CreateOrderRequest request = new CreateOrderRequest();
         request.setOrderAmount(roundOffDecimal(Double.valueOf(ledger.getAmount()), 2)); 
         request.setOrderCurrency(ledger.getCurrencyCodeSource());
-        request.setOrderId("order_23424008");
+        request.setOrderId("order_23424001");
 
         CustomerDetails customerDetails = new CustomerDetails();
         //customer_details.customer_id : should be alpha numeric and may contain underscore or hypens
@@ -104,7 +104,7 @@ public class CashFreePgController {
         orderMeta.setPaymentMethods("cc,dc,upi");
         request.setOrderMeta(orderMeta);
 
-        request.setOrderExpiryTime("2024-03-15T04:37:35.538Z");
+        request.setOrderExpiryTime("2024-03-17T04:37:35.538Z");
 
         request.setOrderNote("Sample Order Note");
 
