@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Data
 @Getter @Setter
-public class cashFreeCreateOrderRequestDto {
+public class CashFreeCreateOrderRequestDto {
     
     private String hiwiId;
     private String payerUserHashId;

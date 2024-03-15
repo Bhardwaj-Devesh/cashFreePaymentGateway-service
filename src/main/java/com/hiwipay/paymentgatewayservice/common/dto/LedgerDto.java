@@ -21,7 +21,7 @@ public class LedgerDto extends Auditable {
     private String hiwiId;
     private String hiwiSubId;
     private String hiwiRrn;
-    private float amount;
+    private Double amount;
     private TxnType type;
     private TxnSubType subType;
     private float tcs;
